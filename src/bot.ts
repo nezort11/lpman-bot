@@ -172,12 +172,19 @@ bot.command("positions", async (context) => {
   const liquidityElement = await page.$(
     `${positionCardBodyLiquiditySelector} > div.sc-3fcdcbc5-1.crdkdg > div.sc-1e14ff52-0.fusaTy`
   );
+  const liquidityToken0Element = await page.$(
+    `${positionCardBodyLiquiditySelector} > div.sc-3fcdcbc5-1.crdkdg > div.sc-3fcdcbc5-1.sc-2340fd50-0.sc-2340fd50-2.eUIAog.dkMNzI.eEPkok > div._1a5xov70._1qhetbfg0._1qhetbf6._1qhetbf1q0._1qhetbf2o._1qhetbf8i._1qhetbft6._1qhetbf46 > div.sc-3fcdcbc5-1.sc-9cde33ed-0.gbBSci.gFUdWE > div`
+  );
+  const liquidityToken1Element = await page.$(
+    `${positionCardBodyLiquiditySelector} > div.sc-3fcdcbc5-1.crdkdg > div.sc-3fcdcbc5-1.sc-2340fd50-0.sc-2340fd50-2.eUIAog.dkMNzI.eEPkok > div:nth-child(2) > div.sc-3fcdcbc5-1.sc-9cde33ed-0.gbBSci.gFUdWE > div`
+  );
   const unclaimedFeesElement = await page.$(
     `${positionCardBodyLiquiditySelector} > div.sc-3fcdcbc5-1.doPGMl > div._1a5xov70._1qhetbfg0._1qhetbf6._1qhetbf1q0._1qhetbf2o._1qhetbf8i._1qhetbft6._1qhetbf46 > div`
   );
   const aprElement = await page.$(
     `${positionCardBodyLiquiditySelector} > div.sc-3fcdcbc5-1.crdkdg > div.sc-3fcdcbc5-1.sc-9cde33ed-0.cEoyjA.hJpHKU > div > div:nth-child(2) > div > div > span > div`
   );
+
   const minPriceRangeElement = await page.$(
     `${positionCardPriceRangeSelector} > div._1a5xov70._1qhetbfg0._1qhetbf6._1qhetbf1q0._1qhetbf2o._1qhetbf7i._1qhetbft6._1qhetbf46 > div > div.sc-3fcdcbc5-1.sc-2340fd50-0.sc-2340fd50-2.lpuOsy.dkMNzI.eEPkok > h2`
   );
@@ -199,6 +206,14 @@ bot.command("positions", async (context) => {
   const liquidityValue = await page.evaluate(
     (el) => el!.textContent!.trim(),
     liquidityElement
+  );
+  const liquidityToken0Value = await page.evaluate(
+    (el) => el!.textContent!.trim(),
+    liquidityToken0Element
+  );
+  const liquidityToken1Value = await page.evaluate(
+    (el) => el!.textContent!.trim(),
+    liquidityToken1Element
   );
   const unclaimedFeesValue = await page.evaluate(
     (el) => el!.textContent!.trim(),
@@ -233,7 +248,9 @@ bot.command("positions", async (context) => {
 Here is the liquidity provider 🗄️ positions for address ${ownerAddress}:
 
 💰 <b>${positionTitleValue} (${positionInfoValue})</b>:
-Liquidity: ${liquidityValue}
+Liquidity: ${liquidityValue} (${liquidityToken0Value} ${
+    position.token0.symbol
+  } + ${liquidityToken1Value} ${position.token1.symbol})
 APR: ${aprValue}
 Unclaimed fees: ${unclaimedFeesValue}
 Price range: ${minPriceRangeValue} — ${maxPriceRangeValue}

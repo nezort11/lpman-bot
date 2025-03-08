@@ -15,13 +15,21 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-type GraphPosition = {
+type Token = {
+  id: string;
+  name: string;
+  symbol: string;
+};
+
+type Position = {
   id: string;
   owner: string;
   depositedToken0: string;
   depositedToken1: string;
   withdrawnToken0: string;
   withdrawnToken1: string;
+  token0: Token;
+  token1: Token;
 };
 
 // Define the query
@@ -58,40 +66,42 @@ const ACTIVE_POSITIONS_QUERY = gql`
       #  volumeToken1
       #  volumeToken0
       #}
-      #token0 {
-      #  id
-      #  name
+      token0 {
+        id
+        name
+        symbol
 
-      #  derivedETH
-      #  derivedUSD
-      #  poolCount
-      #  protocolFeesUSD
-      #  totalValueLockedUSD
-      #  totalValueLockedUSDUntracked
-      #  untrackedVolumeUSD
-      #  volume
-      #  volumeUSD
-      #}
-      #token1 {
-      #  id
-      #  name
+        #  derivedETH
+        #  derivedUSD
+        #  poolCount
+        #  protocolFeesUSD
+        #  totalValueLockedUSD
+        #  totalValueLockedUSDUntracked
+        #  untrackedVolumeUSD
+        #  volume
+        #  volumeUSD
+      }
+      token1 {
+        id
+        name
+        symbol
 
-      #  derivedETH
-      #  derivedUSD
-      #  poolCount
-      #  protocolFeesUSD
-      #  totalValueLockedUSD
-      #  totalValueLockedUSDUntracked
-      #  untrackedVolumeUSD
-      #  volume
-      #  volumeUSD
-      #}
+        #  derivedETH
+        #  derivedUSD
+        #  poolCount
+        #  protocolFeesUSD
+        #  totalValueLockedUSD
+        #  totalValueLockedUSDUntracked
+        #  untrackedVolumeUSD
+        #  volume
+        #  volumeUSD
+      }
     }
   }
 `;
 
 export interface ActivePositionsResponse {
-  positions: GraphPosition[];
+  positions: Position[];
 }
 
 export const getActivePositions = async (owner: string) => {
