@@ -8,8 +8,10 @@ dotenv.config({ path: path.join(MOUNT_ROOT_DIR_PATH, "./env/.env") });
 
 // console.log("process env", process.env);
 
-export const BOT_TOKEN = process.env.BOT_TOKEN as string;
-export const APP_ENV = process.env.APP_ENV as string;
+export const APP_ENV = process.env.APP_ENV;
+
+export const BOT_TOKEN =
+  APP_ENV === "local" ? process.env.BOT_TOKEN_DEV : process.env.BOT_TOKEN;
 
 export const YDB_ENDPOINT = process.env.YDB_ENDPOINT;
 export const YDB_DATABASE = process.env.YDB_DATABASE;
